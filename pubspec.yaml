@@ -1,0 +1,30 @@
+name: stateful_books
+description: go_router books example, with stateful nested navigation
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=2.18.5 <3.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.5
+  url_launcher: ^6.1.7
+  collection: ^1.16.0
+  adaptive_navigation: ^0.0.7
+  go_router:
+    git:
+      url: https://github.com/tolo/flutter_packages.git
+      path: packages/go_router
+      ref: nested-persistent-navigation
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^2.0.1
+
+flutter:
+  uses-material-design: true
