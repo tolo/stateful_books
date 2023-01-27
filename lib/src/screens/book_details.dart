@@ -36,9 +36,11 @@ class BookDetailsScreen extends StatelessWidget {
       body: Center(
         child: Column(
           children: <Widget>[
-            Text(
-              book!.title,
-              style: Theme.of(context).textTheme.headlineMedium,
+            Padding(padding: const EdgeInsets.all(16.0), child:
+              Text(
+                book!.title,
+                style: Theme.of(context).textTheme.headlineMedium,
+              ),
             ),
             Text(
               book!.author.name,

@@ -18,18 +18,6 @@ import 'src/screens/scaffold.dart';
 import 'src/screens/settings.dart';
 import 'src/screens/sign_in.dart';
 
-/// The branches used by StatefulShellRoute for setup of the nested Navigators.
-/// The custom branch class ScaffoldBranch includes additional information
-/// (title and icon) to make it possible to setup the AdaptiveNavigationScaffold
-/// directly from the branches.
-final List<ScaffoldBranch> _branches = <ScaffoldBranch>[
-  ScaffoldBranch(rootLocation: '/books', title: 'Books', icon: Icons.book),
-  ScaffoldBranch(
-      rootLocation: '/authors', title: 'Authors', icon: Icons.person),
-  ScaffoldBranch(
-      rootLocation: '/settings', title: 'Settings', icon: Icons.settings),
-];
-
 void main() => runApp(Bookstore());
 
 /// The book store view.
@@ -67,73 +55,93 @@ class Bookstore extends StatelessWidget {
         ),
       ),
       StatefulShellRoute(
-        routes: [
-          GoRoute(
-            path: '/books',
-            redirect: (_, __) => '/books/popular',
-          ),
-          GoRoute(
-            path: '/book/:bookId',
-            redirect: (BuildContext context, GoRouterState state) =>
-                '/books/all/${state.params['bookId']}',
-          ),
-          GoRoute(
-            path: '/books/:kind(new|all|popular)',
-            pageBuilder: (BuildContext context, GoRouterState state) =>
-                FadeTransitionPage(
-              key: state.pageKey,
-              child: BooksScreen(state.params['kind']!),
-            ),
-            routes: <GoRoute>[
+        branches: [
+          /// The custom branch class ScaffoldBranch includes additional information
+          /// (title and icon) to make it possible to setup the AdaptiveNavigationScaffold
+          /// directly from the branches.
+          ScaffoldBranch(
+            title: 'Books',
+            icon: Icons.book,
+            routes: [
               GoRoute(
-                path: ':bookId',
-                builder: (BuildContext context, GoRouterState state) {
-                  final String bookId = state.params['bookId']!;
-                  final Book? selectedBook = libraryInstance.allBooks
-                      .firstWhereOrNull((Book b) => b.id.toString() == bookId);
+                path: '/books',
+                redirect: (_, __) => '/books/popular',
+              ),
+              GoRoute(
+                path: '/book/:bookId',
+                redirect: (BuildContext context, GoRouterState state) =>
+                    '/books/all/${state.params['bookId']}',
+              ),
+              GoRoute(
+                path: '/books/:kind(new|all|popular)',
+                pageBuilder: (BuildContext context, GoRouterState state) =>
+                    FadeTransitionPage(
+                  key: state.pageKey,
+                  child: BooksScreen(state.params['kind']!),
+                ),
+                routes: <GoRoute>[
+                  GoRoute(
+                    path: ':bookId',
+                    builder: (BuildContext context, GoRouterState state) {
+                      final String bookId = state.params['bookId']!;
+                      final Book? selectedBook = libraryInstance.allBooks
+                          .firstWhereOrNull(
+                              (Book b) => b.id.toString() == bookId);
 
-                  return BookDetailsScreen(book: selectedBook);
-                },
+                      return BookDetailsScreen(book: selectedBook);
+                    },
+                  ),
+                ],
               ),
             ],
           ),
-          GoRoute(
-            path: '/author/:authorId',
-            redirect: (BuildContext context, GoRouterState state) =>
-                '/authors/${state.params['authorId']}',
-          ),
-          GoRoute(
-            path: '/authors',
-            pageBuilder: (BuildContext context, GoRouterState state) =>
-                FadeTransitionPage(
-              key: state.pageKey,
-              child: const AuthorsScreen(),
-            ),
-            routes: <GoRoute>[
+          ScaffoldBranch(
+            title: 'Authors',
+            icon: Icons.person,
+            routes: [
               GoRoute(
-                path: ':authorId',
-                builder: (BuildContext context, GoRouterState state) {
-                  final int authorId = int.parse(state.params['authorId']!);
-                  final Author? selectedAuthor = libraryInstance.allAuthors
-                      .firstWhereOrNull((Author a) => a.id == authorId);
+                path: '/authors',
+                pageBuilder: (BuildContext context, GoRouterState state) =>
+                    FadeTransitionPage(
+                  key: state.pageKey,
+                  child: const AuthorsScreen(),
+                ),
+                routes: <GoRoute>[
+                  GoRoute(
+                    path: ':authorId',
+                    builder: (BuildContext context, GoRouterState state) {
+                      final int authorId = int.parse(state.params['authorId']!);
+                      final Author? selectedAuthor = libraryInstance.allAuthors
+                          .firstWhereOrNull((Author a) => a.id == authorId);
 
-                  return AuthorDetailsScreen(author: selectedAuthor);
-                },
+                      return AuthorDetailsScreen(author: selectedAuthor);
+                    },
+                  ),
+                ],
+              ),
+              GoRoute(
+                path: '/author/:authorId',
+                redirect: (BuildContext context, GoRouterState state) =>
+                    '/authors/${state.params['authorId']}',
               ),
             ],
           ),
-          GoRoute(
-            path: '/settings',
-            pageBuilder: (BuildContext context, GoRouterState state) =>
-                FadeTransitionPage(
-              key: state.pageKey,
-              child: const SettingsScreen(),
-            ),
+          ScaffoldBranch(
+            title: 'Settings',
+            icon: Icons.settings,
+            routes: [
+              GoRoute(
+                path: '/settings',
+                pageBuilder: (BuildContext context, GoRouterState state) =>
+                    FadeTransitionPage(
+                  key: state.pageKey,
+                  child: const SettingsScreen(),
+                ),
+              ),
+            ],
           ),
         ],
-        branches: _branches,
-        builder: (context, state, child) =>
-            BookstoreScaffold(branches: _branches, child: child),
+        builder: (context, state, child) => BookstoreScaffold(child: child),
         pageBuilder: (context, state, child) =>
             FadeTransitionPage(key: state.pageKey, child: child),
       ),
