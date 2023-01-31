@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stateful_books/src/application_context.dart';
 import 'package:stateful_books/src/data/library.dart';
+import 'package:stateful_books/src/widgets/future_widget.dart';
 import 'package:stateful_books_client/stateful_books_client.dart';
 
 import '../widgets/book_list.dart';
@@ -34,15 +35,10 @@ class AuthorDetailsScreen extends StatelessWidget {
         ),
       );
     }
-    return FutureBuilder(future: library.authorById(authorId!), builder: (context, snapshot) {
-      if (snapshot.hasData) {
-        return _authorDetails(context, library, snapshot.data as Author);
-      } else if (snapshot.hasError) {
-        return Text('Error: ${snapshot.error}');
-      } else {
-        return const CircularProgressIndicator();
-      }
-    });
+    return FutureWidget<Author>(
+      future: library.authorById(authorId!),
+      builder: (context, data) => _authorDetails(context, library, data),
+    );
   }
 
   Widget _authorDetails(BuildContext context, Library library, Author author) {

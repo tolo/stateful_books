@@ -61,18 +61,18 @@ class SettingsContent extends StatelessWidget {
               child: const Text('Sign out'),
             ),
             Link(
-              uri: Uri.parse('/book/0'),
+              uri: Uri.parse('/book/1'),
               builder: (BuildContext context, FollowLink? followLink) =>
                   TextButton(
                 onPressed: followLink,
-                child: const Text('Go directly to /book/0 (Link)'),
+                child: const Text('Go directly to /book/1 (Link)'),
               ),
             ),
             TextButton(
               onPressed: () {
-                context.go('/book/0');
+                context.go('/book/2');
               },
-              child: const Text('Go directly to /book/0 (GoRouter)'),
+              child: const Text('Go directly to /book/2 (GoRouter)'),
             ),
           ].map<Widget>((Widget w) =>
               Padding(padding: const EdgeInsets.all(8), child: w)),

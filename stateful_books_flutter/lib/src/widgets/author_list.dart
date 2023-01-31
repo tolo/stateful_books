@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
+import 'package:stateful_books/src/widgets/future_widget.dart';
 import 'package:stateful_books_client/stateful_books_client.dart';
 
 /// The author list view.
@@ -22,15 +23,10 @@ class AuthorList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(future: authors, builder: (context, snapshot) {
-      if (snapshot.hasData) {
-        return _authorList(context, snapshot.data as List<Author>);
-      } else if (snapshot.hasError) {
-        return Text('Error: ${snapshot.error}');
-      } else {
-        return const CircularProgressIndicator();
-      }
-    });
+    return FutureWidget<List<Author>>(
+      future: authors,
+      builder: _authorList,
+    );
   }
 
   Widget _authorList(BuildContext context, List<Author> authors) => ListView.builder(

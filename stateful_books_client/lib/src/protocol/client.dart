@@ -13,19 +13,6 @@ import 'package:stateful_books_client/src/protocol/author.dart' as _i4;
 import 'dart:io' as _i5;
 import 'protocol.dart' as _i6;
 
-class _EndpointExample extends _i1.EndpointRef {
-  _EndpointExample(_i1.EndpointCaller caller) : super(caller);
-
-  @override
-  String get name => 'example';
-
-  _i2.Future<String> hello(String name) => caller.callServerEndpoint<String>(
-        'example',
-        'hello',
-        {'name': name},
-      );
-}
-
 class _EndpointLibrary extends _i1.EndpointRef {
   _EndpointLibrary(_i1.EndpointCaller caller) : super(caller);
 
@@ -99,19 +86,13 @@ class Client extends _i1.ServerpodClient {
           context: context,
           authenticationKeyManager: authenticationKeyManager,
         ) {
-    example = _EndpointExample(this);
     library = _EndpointLibrary(this);
   }
-
-  late final _EndpointExample example;
 
   late final _EndpointLibrary library;
 
   @override
-  Map<String, _i1.EndpointRef> get endpointRefLookup => {
-        'example': example,
-        'library': library,
-      };
+  Map<String, _i1.EndpointRef> get endpointRefLookup => {'library': library};
   @override
   Map<String, _i1.ModuleEndpointCaller> get moduleLookup => {};
 }

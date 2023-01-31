@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
+import 'package:stateful_books/src/widgets/future_widget.dart';
 import 'package:stateful_books_client/stateful_books_client.dart';
 
 /// The book list view.
@@ -22,15 +23,10 @@ class BookList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(future: books, builder: (context, snapshot) {
-      if (snapshot.hasData) {
-        return _bookList(context, snapshot.data as List<Book>);
-      } else if (snapshot.hasError) {
-        return Text('Error: ${snapshot.error}');
-      } else {
-        return const CircularProgressIndicator();
-      }
-    });
+    return FutureWidget<List<Book>>(
+      future: books,
+      builder: _bookList,
+    );
   }
 
   Widget _bookList(BuildContext context, List<Book> books) => ListView.builder(

@@ -57,12 +57,12 @@ Future<void> _seedDatabase(Serverpod pod) async {
 
         author = await _addAuthor(session, name: 'S.A. Corey');
         await _addBook(session, title: 'Leviathan Wakes', authorId: author.id!, isPopular: true, isNew: false);
-        await _addBook(session, title: 'Caliban\'s War', authorId: author.id!, isPopular: true, isNew: false);
-        await _addBook(session, title: 'Abaddon\'s Gate', authorId: author.id!, isPopular: true, isNew: false);
+        await _addBook(session, title: 'Caliban\'s War', authorId: author.id!, isPopular: false, isNew: false);
+        await _addBook(session, title: 'Abaddon\'s Gate', authorId: author.id!, isPopular: false, isNew: false);
         await _addBook(session, title: 'Cibola Burn', authorId: author.id!, isPopular: true, isNew: false);
-        await _addBook(session, title: 'Nemesis Games', authorId: author.id!, isPopular: true, isNew: false);
-        await _addBook(session, title: 'Babylon\'s Ashes', authorId: author.id!, isPopular: true, isNew: false);
-        await _addBook(session, title: 'Persepolis Rising', authorId: author.id!, isPopular: true, isNew: true);
+        await _addBook(session, title: 'Nemesis Games', authorId: author.id!, isPopular: false, isNew: false);
+        await _addBook(session, title: 'Babylon\'s Ashes', authorId: author.id!, isPopular: false, isNew: false);
+        await _addBook(session, title: 'Persepolis Rising', authorId: author.id!, isPopular: false, isNew: true);
         await _addBook(session, title: 'Tiamat\'s Wrath', authorId: author.id!, isPopular: true, isNew: true);
         await _addBook(session, title: 'Leviathan Falls', authorId: author.id!, isPopular: true, isNew: true);
       });

@@ -7,51 +7,20 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
-import '../endpoints/example_endpoint.dart' as _i2;
-import '../endpoints/library_endpoint.dart' as _i3;
-import 'package:stateful_books_server/src/generated/author.dart' as _i4;
+import '../endpoints/library_endpoint.dart' as _i2;
+import 'package:stateful_books_server/src/generated/author.dart' as _i3;
 
 class Endpoints extends _i1.EndpointDispatch {
   @override
   void initializeEndpoints(_i1.Server server) {
     var endpoints = <String, _i1.Endpoint>{
-      'example': _i2.ExampleEndpoint()
-        ..initialize(
-          server,
-          'example',
-          null,
-        ),
-      'library': _i3.LibraryEndpoint()
+      'library': _i2.LibraryEndpoint()
         ..initialize(
           server,
           'library',
           null,
-        ),
-    };
-    connectors['example'] = _i1.EndpointConnector(
-      name: 'example',
-      endpoint: endpoints['example']!,
-      methodConnectors: {
-        'hello': _i1.MethodConnector(
-          name: 'hello',
-          params: {
-            'name': _i1.ParameterDescription(
-              name: 'name',
-              type: _i1.getType<String>(),
-              nullable: false,
-            )
-          },
-          call: (
-            _i1.Session session,
-            Map<String, dynamic> params,
-          ) async =>
-              (endpoints['example'] as _i2.ExampleEndpoint).hello(
-            session,
-            params['name'],
-          ),
         )
-      },
-    );
+    };
     connectors['library'] = _i1.EndpointConnector(
       name: 'library',
       endpoint: endpoints['library']!,
@@ -63,7 +32,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['library'] as _i3.LibraryEndpoint).bookCount(session),
+              (endpoints['library'] as _i2.LibraryEndpoint).bookCount(session),
         ),
         'allBooks': _i1.MethodConnector(
           name: 'allBooks',
@@ -72,7 +41,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['library'] as _i3.LibraryEndpoint).allBooks(session),
+              (endpoints['library'] as _i2.LibraryEndpoint).allBooks(session),
         ),
         'popularBooks': _i1.MethodConnector(
           name: 'popularBooks',
@@ -81,7 +50,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['library'] as _i3.LibraryEndpoint)
+              (endpoints['library'] as _i2.LibraryEndpoint)
                   .popularBooks(session),
         ),
         'newBooks': _i1.MethodConnector(
@@ -91,14 +60,14 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['library'] as _i3.LibraryEndpoint).newBooks(session),
+              (endpoints['library'] as _i2.LibraryEndpoint).newBooks(session),
         ),
         'booksByAuthor': _i1.MethodConnector(
           name: 'booksByAuthor',
           params: {
             'author': _i1.ParameterDescription(
               name: 'author',
-              type: _i1.getType<_i4.Author>(),
+              type: _i1.getType<_i3.Author>(),
               nullable: false,
             )
           },
@@ -106,7 +75,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['library'] as _i3.LibraryEndpoint).booksByAuthor(
+              (endpoints['library'] as _i2.LibraryEndpoint).booksByAuthor(
             session,
             params['author'],
           ),
@@ -118,7 +87,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['library'] as _i3.LibraryEndpoint).allAuthors(session),
+              (endpoints['library'] as _i2.LibraryEndpoint).allAuthors(session),
         ),
         'bookById': _i1.MethodConnector(
           name: 'bookById',
@@ -133,7 +102,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['library'] as _i3.LibraryEndpoint).bookById(
+              (endpoints['library'] as _i2.LibraryEndpoint).bookById(
             session,
             params['bookId'],
           ),
@@ -151,7 +120,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['library'] as _i3.LibraryEndpoint).authorById(
+              (endpoints['library'] as _i2.LibraryEndpoint).authorById(
             session,
             params['authorId'],
           ),

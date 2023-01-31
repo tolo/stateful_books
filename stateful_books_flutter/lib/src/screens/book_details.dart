@@ -5,6 +5,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stateful_books/src/application_context.dart';
+import 'package:stateful_books/src/widgets/future_widget.dart';
 import 'package:stateful_books_client/stateful_books_client.dart';
 import 'package:url_launcher/link.dart';
 
@@ -34,25 +35,18 @@ class BookDetailsScreen extends StatelessWidget {
         ),
       );
     }
-    return FutureBuilder(future: library.bookById(bookId!), builder: (context, snapshot) {
-      if (snapshot.hasData) {
-        return _bookDetails(context, snapshot.data as Book);
-      } else if (snapshot.hasError) {
-        return Text('Error: ${snapshot.error}');
-      } else {
-        return const CircularProgressIndicator();
-      }
-    });
-
-
+    return FutureWidget<Book>(
+      future: library.bookById(bookId!),
+      builder: _bookDetails,
+    );
   }
 
   Widget _bookDetails(BuildContext context, Book book) {
     return Scaffold(
       appBar: AppBar(
         title: Text(book.title),
-      ),
-      body: Center(
+        ),
+        body: Center(
         child: Column(
           children: <Widget>[
             const Padding(padding: EdgeInsets.all(8.0)),

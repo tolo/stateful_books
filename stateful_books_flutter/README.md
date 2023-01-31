@@ -1,16 +1,11 @@
 # stateful_books_flutter
 
-A new Flutter project.
+The actual Stateful Books Flutter app, using Serverpod and [PR #2650](https://github.com/flutter/packages/pull/2650) of go_router. 
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+See main readme for a complete setup guide.
 
-A few resources to get you started if this is your first Flutter project:
+To run the project, first make sure that the server is running, then do:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+    flutter run
