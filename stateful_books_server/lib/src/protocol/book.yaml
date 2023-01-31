@@ -1,0 +1,9 @@
+class: Book
+table: book
+
+fields:
+  title: String
+  authorId: int, parent=author
+  authorName: String?, api
+  isPopular: bool
+  isNew: bool

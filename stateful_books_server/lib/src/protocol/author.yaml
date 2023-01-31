@@ -1,0 +1,8 @@
+class: Author
+table: author
+
+fields:
+  name: String
+  bookCount: int?, api
+  
+  

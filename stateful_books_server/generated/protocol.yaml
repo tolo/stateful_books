@@ -1,0 +1,11 @@
+example:
+  - hello:
+library:
+  - bookCount:
+  - allBooks:
+  - popularBooks:
+  - newBooks:
+  - booksByAuthor:
+  - allAuthors:
+  - bookById:
+  - authorById:

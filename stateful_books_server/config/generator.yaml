@@ -1,0 +1,3 @@
+type: server
+
+client_package_path: ../stateful_books_client
