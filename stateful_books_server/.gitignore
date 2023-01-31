@@ -8,5 +8,5 @@ build/
 # Directory created by dartdoc
 doc/api/
 
-# Passwords file
-config/passwords.yaml
+# Passwords file (in this sample, we check it in to the repo for simplicity)
+#config/passwords.yaml
