@@ -7,9 +7,12 @@ import 'package:flutter/widgets.dart';
 /// A mock authentication service.
 class BookstoreAuth extends ChangeNotifier {
   bool _signedIn = false;
+  bool _isAdmin = false;
 
   /// Whether user has signed in.
   bool get signedIn => _signedIn;
+
+  bool get isAdmin => _isAdmin;
 
   /// Signs out the current user.
   Future<void> signOut() async {
@@ -25,6 +28,7 @@ class BookstoreAuth extends ChangeNotifier {
 
     // Sign in. Allow any password.
     _signedIn = true;
+    _isAdmin = username == 'admin';
     notifyListeners();
     return _signedIn;
   }

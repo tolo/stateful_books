@@ -8,10 +8,8 @@ class LibraryEndpoint extends Endpoint {
     return Book.count(session);
   }
 
-  Future<Book?> _withAuthor(Book? book, Session session) async {
-    book?.authorName = (await Author.findById(session, book.authorId))?.name;
-    return book;
-  }
+  Future<Book?> _withAuthor(Book? book, Session session) async =>
+    book?..authorName = (await Author.findById(session, book.authorId))?.name;
 
   Future<List<Book>> _withAuthors(List<Book> books, Session session) async {
     for(var book in books) {
@@ -36,6 +34,23 @@ class LibraryEndpoint extends Endpoint {
     return _withAuthors(await Book.find(session, where: (t) => t.authorId.equals(author.id!)), session);
   }
 
+  Future<Book?> bookById(Session session, int bookId) async {
+    return _withAuthor(await Book.findById(session, bookId), session);
+  }
+
+  Future<void> createBook(Session session, Book book) async {
+    return await Book.insert(session, book);
+  }
+
+  Future<void> updateBook(Session session, Book book) async {
+    await Book.update(session, book);
+  }
+
+  Future<void> deleteBook(Session session, int bookId) async {
+    await Book.delete(session, where: (t) => t.id.equals(bookId));
+  }
+
+
   Future<List<Author>> allAuthors(Session session) async {
     List<Author> authors = await Author.find(session);
     for(var author in authors) {
@@ -44,11 +59,23 @@ class LibraryEndpoint extends Endpoint {
     return authors;
   }
 
-  Future<Book?> bookById(Session session, int bookId) async {
-    return _withAuthor(await Book.findById(session, bookId), session);
+  Future<Author?> authorById(Session session, int authorId) async {
+    final author = await Author.findById(session, authorId);
+    if (author != null) {
+      author.bookCount = await Book.count(session, where: (t) => t.authorId.equals(author.id!));
+    }
+    return author;
   }
 
-  Future<Author?> authorById(Session session, int authorId) async {
-    return Author.findById(session, authorId);
+  Future<void> createAuthor(Session session, Author author) async {
+    return await Author.insert(session, author);
+  }
+
+  Future<void> updateAuthor(Session session, Author author) async {
+    await Author.update(session, author);
+  }
+
+  Future<void> deleteAuthor(Session session, int authorId) async {
+    await Author.delete(session, where: (t) => t.id.equals(authorId));
   }
 }

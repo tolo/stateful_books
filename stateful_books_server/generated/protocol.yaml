@@ -4,6 +4,12 @@ library:
   - popularBooks:
   - newBooks:
   - booksByAuthor:
-  - allAuthors:
   - bookById:
+  - createBook:
+  - updateBook:
+  - deleteBook:
+  - allAuthors:
   - authorById:
+  - createAuthor:
+  - updateAuthor:
+  - deleteAuthor:

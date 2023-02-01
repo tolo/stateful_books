@@ -5,17 +5,15 @@
 import 'package:stateful_books_client/stateful_books_client.dart';
 
 /// A library that contains books and authors.
-class Library {
+class LibraryApi {
 
-  Library(this.client);
+  LibraryApi(this.client);
 
   final Client client;
 
+
   /// The books in the library.
   Future<List<Book>> get allBooks => client.library.allBooks();
-
-  /// The authors in the library.
-  Future<List<Author>> get allAuthors => client.library.allAuthors();
 
   /// The list of popular books in the library.
   Future<List<Book>> get popularBooks => client.library.popularBooks();
@@ -28,5 +26,22 @@ class Library {
 
   Future<Book?> bookById(int bookId) => client.library.bookById(bookId);
 
+  Future<void> createBook(String title, Author author) =>
+      client.library.createBook(Book(title: title, authorId: author.id!, isPopular: true, isNew: true));
+
+  Future<void> updateBook(Book book) => client.library.updateBook(book);
+
+  Future<void> deleteBook(int bookId) => client.library.deleteBook(bookId);
+
+
+  /// The authors in the library.
+  Future<List<Author>> get allAuthors => client.library.allAuthors();
+
   Future<Author?> authorById(int authorId) => client.library.authorById(authorId);
+
+  Future<void> createAuthor(String name) => client.library.createAuthor(Author(name: name));
+
+  Future<void> updateAuthor(Author author) => client.library.updateAuthor(author);
+
+  Future<void> deleteAuthor(int authorId) => client.library.deleteAuthor(authorId);
 }

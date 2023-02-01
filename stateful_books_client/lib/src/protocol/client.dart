@@ -53,13 +53,6 @@ class _EndpointLibrary extends _i1.EndpointRef {
         {'author': author},
       );
 
-  _i2.Future<List<_i4.Author>> allAuthors() =>
-      caller.callServerEndpoint<List<_i4.Author>>(
-        'library',
-        'allAuthors',
-        {},
-      );
-
   _i2.Future<_i3.Book?> bookById(int bookId) =>
       caller.callServerEndpoint<_i3.Book?>(
         'library',
@@ -67,10 +60,56 @@ class _EndpointLibrary extends _i1.EndpointRef {
         {'bookId': bookId},
       );
 
+  _i2.Future<void> createBook(_i3.Book book) => caller.callServerEndpoint<void>(
+        'library',
+        'createBook',
+        {'book': book},
+      );
+
+  _i2.Future<void> updateBook(_i3.Book book) => caller.callServerEndpoint<void>(
+        'library',
+        'updateBook',
+        {'book': book},
+      );
+
+  _i2.Future<void> deleteBook(int bookId) => caller.callServerEndpoint<void>(
+        'library',
+        'deleteBook',
+        {'bookId': bookId},
+      );
+
+  _i2.Future<List<_i4.Author>> allAuthors() =>
+      caller.callServerEndpoint<List<_i4.Author>>(
+        'library',
+        'allAuthors',
+        {},
+      );
+
   _i2.Future<_i4.Author?> authorById(int authorId) =>
       caller.callServerEndpoint<_i4.Author?>(
         'library',
         'authorById',
+        {'authorId': authorId},
+      );
+
+  _i2.Future<void> createAuthor(_i4.Author author) =>
+      caller.callServerEndpoint<void>(
+        'library',
+        'createAuthor',
+        {'author': author},
+      );
+
+  _i2.Future<void> updateAuthor(_i4.Author author) =>
+      caller.callServerEndpoint<void>(
+        'library',
+        'updateAuthor',
+        {'author': author},
+      );
+
+  _i2.Future<void> deleteAuthor(int authorId) =>
+      caller.callServerEndpoint<void>(
+        'library',
+        'deleteAuthor',
         {'authorId': authorId},
       );
 }

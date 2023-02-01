@@ -21,6 +21,14 @@ class AuthorsScreen extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
           title: const Text(title),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.add),
+              onPressed: () {
+                context.go('/authors/add');
+              },
+            ),
+          ],
         ),
         body: _authorList(context),
       );

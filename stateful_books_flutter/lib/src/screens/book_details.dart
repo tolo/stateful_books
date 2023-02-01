@@ -6,13 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stateful_books/src/application_context.dart';
 import 'package:stateful_books/src/widgets/future_widget.dart';
+import 'package:stateful_books/src/widgets/widget_utils.dart';
 import 'package:stateful_books_client/stateful_books_client.dart';
 import 'package:url_launcher/link.dart';
 
 import 'author_details.dart';
 
 /// A screen to display book details.
-class BookDetailsScreen extends StatelessWidget {
+class BookDetailsScreen extends StatelessWidget with WidgetAdditions {
   /// Creates a [BookDetailsScreen].
   const BookDetailsScreen({
     Key? key,
@@ -85,9 +86,29 @@ class BookDetailsScreen extends StatelessWidget {
               },
               child: const Text('View author (GoRouter.push)'),
             ),
+            const Padding(padding: EdgeInsets.all(8.0)),
+            _deleteBook(context, book),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _deleteBook(BuildContext context, Book book) {
+    final scaffoldMessenger = ScaffoldMessenger.of(context);
+    final navigator = Navigator.of(context);
+    final library = ApplicationContextProvider.of(context).library;
+    return ElevatedButton(
+      onPressed: () async {
+        try {
+          await library.deleteBook(book.id!);
+          showSnack(scaffoldMessenger, 'Book deleted!');
+          navigator.pop();
+        } catch (e) {
+          showSnack(scaffoldMessenger, 'Error adding author: $e');
+        }
+      },
+      child: const Text('Delete book'),
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:serverpod/serverpod.dart';
+// import 'package:serverpod_auth_server/module.dart' as auth;
 import 'package:stateful_books_server/src/endpoints/library_endpoint.dart';
 
 import 'package:stateful_books_server/src/web/routes/root.dart';
@@ -44,7 +45,7 @@ Future<void> _seedDatabase(Serverpod pod) async {
     final library = pod.endpoints.getConnectorByName('library')?.endpoint as LibraryEndpoint;
     final bookCount = await library.bookCount(session);
     if (bookCount == 0) {
-      session.log('Seeding database.');
+      session.log('Seeding books...');
       await session.db.transaction((transaction) async {
         Author author = await _addAuthor(session!, name: 'Philip K. Dick');
         await _addBook(session, title: 'Do Androids Dream of Electric Sheep?', authorId: author.id!, isPopular: false, isNew: false);
@@ -66,11 +67,19 @@ Future<void> _seedDatabase(Serverpod pod) async {
         await _addBook(session, title: 'Tiamat\'s Wrath', authorId: author.id!, isPopular: true, isNew: true);
         await _addBook(session, title: 'Leviathan Falls', authorId: author.id!, isPopular: true, isNew: true);
       });
-      session.log('Done seeding database.');
+      session.log('Done seeding books data.');
     } else {
       session.log('Database contains $bookCount books - skipping seeding.');
     }
-    
+
+    // final user = await auth.Users.findUserByEmail(session, 'admin@ad.min');
+    // if (user == null) {
+    //   session.log('Seeding users...');
+    //   await auth.Users.createUser(session, auth.UserInfo(userIdentifier: 'admin', userName: 'admin',
+    //       created: DateTime.now(), scopeNames: [Scope.admin.name!], blocked: false));
+    //   session.log('Done seeding users.');
+    // }
+
   } finally {
     session?.close();
   }

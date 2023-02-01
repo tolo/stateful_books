@@ -5,14 +5,15 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stateful_books/src/application_context.dart';
-import 'package:stateful_books/src/data/library.dart';
+import 'package:stateful_books/src/data/library_api.dart';
 import 'package:stateful_books/src/widgets/future_widget.dart';
+import 'package:stateful_books/src/widgets/widget_utils.dart';
 import 'package:stateful_books_client/stateful_books_client.dart';
 
 import '../widgets/book_list.dart';
 
 /// The author detail screen.
-class AuthorDetailsScreen extends StatelessWidget {
+class AuthorDetailsScreen extends StatelessWidget with WidgetAdditions {
   /// Creates an author detail screen.
   const AuthorDetailsScreen({
     required this.authorId,
@@ -41,10 +42,18 @@ class AuthorDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _authorDetails(BuildContext context, Library library, Author author) {
+  Widget _authorDetails(BuildContext context, LibraryApi library, Author author) {
     return Scaffold(
       appBar: AppBar(
         title: Text(author.name),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.delete),
+            onPressed: () {
+              _deleteAuthor(context, author);
+            },
+          ),
+        ],
       ),
       body: Center(
         child: Column(
@@ -59,5 +68,23 @@ class AuthorDetailsScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _deleteAuthor(BuildContext context, Author author) async {
+    final scaffoldMessenger = ScaffoldMessenger.of(context);
+    if (author.bookCount! > 0) {
+      showSnack(scaffoldMessenger, 'Cannot delete author with books');
+      return;
+    }
+    final navigator = Navigator.of(context);
+    final library = ApplicationContextProvider.of(context).library;
+
+    try {
+      await library.deleteAuthor(author.id!);
+      showSnack(scaffoldMessenger, 'Author deleted!');
+      navigator.pop();
+    } catch (e) {
+      showSnack(scaffoldMessenger, 'Error deleting author: $e');
+    }
   }
 }

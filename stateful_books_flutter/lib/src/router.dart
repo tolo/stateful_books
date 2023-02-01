@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stateful_books/src/auth.dart';
+import 'package:stateful_books/src/screens/authors_add.dart';
+import 'package:stateful_books/src/screens/books_add.dart';
 
 import 'screens/author_details.dart';
 import 'screens/authors.dart';
@@ -58,12 +59,14 @@ class AppRouter {
                     ),
                 routes: <GoRoute>[
                   GoRoute(
-                    path: ':bookId',
+                    path: ':bookId([0-9]+)',
                     builder: (BuildContext context, GoRouterState state) {
                       final String bookId = state.params['bookId']!;
                       return BookDetailsScreen(bookId: int.tryParse(bookId));
                     },
                   ),
+                  GoRoute(path: 'add', builder: (BuildContext context, GoRouterState state)
+                    => const AddBookScreen()),
                 ],
               ),
             ],
@@ -81,12 +84,14 @@ class AppRouter {
                     ),
                 routes: <GoRoute>[
                   GoRoute(
-                    path: ':authorId',
+                    path: ':authorId([0-9]+)',
                     builder: (BuildContext context, GoRouterState state) {
                       final String authorId = state.params['authorId']!;
                       return AuthorDetailsScreen(authorId: int.tryParse(authorId));
                     },
                   ),
+                  GoRoute(path: 'add', builder: (BuildContext context, GoRouterState state)
+                    => const AddAuthorScreen()),
                 ],
               ),
               GoRoute(

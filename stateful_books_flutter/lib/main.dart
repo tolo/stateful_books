@@ -7,22 +7,23 @@ import 'package:stateful_books/src/application_context.dart';
 
 import 'src/auth.dart';
 
-final _applicationContext = ApplicationContext();
-
-void main() => runApp(const Bookstore());
+void main() => runApp(Bookstore(applicationContext: ApplicationContext()));
 
 /// The book store view.
 class Bookstore extends StatelessWidget {
   /// Creates a [Bookstore].
-  const Bookstore({Key? key}) : super(key: key);
+  const Bookstore({required this.applicationContext, Key? key}) : super(key: key);
+
+  final ApplicationContext applicationContext;
 
   @override
   Widget build(BuildContext context) =>
-    ApplicationContextProvider(applicationContext: _applicationContext, child:
+    ApplicationContextProvider(applicationContext: applicationContext, child:
       BookstoreAuthScope(
-        notifier: _applicationContext.auth,
+        notifier: applicationContext.auth,
         child: MaterialApp.router(
-          routerConfig: _applicationContext.router,
+          debugShowCheckedModeBanner: false,
+          routerConfig: applicationContext.router,
         ),
       ),
     );

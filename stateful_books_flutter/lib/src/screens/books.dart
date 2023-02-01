@@ -63,6 +63,14 @@ class _BooksScreenState extends State<BooksScreen>
     return Scaffold(
       appBar: AppBar(
         title: const Text('Books'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () {
+              context.go('/books/${widget.kind}/add');
+            },
+          ),
+        ],
         bottom: TabBar(
           controller: _tabController,
           onTap: _handleTabTapped,
