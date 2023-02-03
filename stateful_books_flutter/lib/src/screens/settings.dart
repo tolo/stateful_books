@@ -4,9 +4,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:stateful_books/src/application_context.dart';
 import 'package:url_launcher/link.dart';
-
-import '../auth.dart';
 
 /// The settings screen.
 class SettingsScreen extends StatefulWidget {
@@ -54,9 +53,13 @@ class SettingsContent extends StatelessWidget {
               'Settings',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
+            Text(
+              'Signed in as: ${ApplicationContextProvider.of(context).auth.user!.email}',
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
             ElevatedButton(
               onPressed: () {
-                BookstoreAuthScope.of(context).signOut();
+                ApplicationContextProvider.of(context).auth.signOut();
               },
               child: const Text('Sign out'),
             ),

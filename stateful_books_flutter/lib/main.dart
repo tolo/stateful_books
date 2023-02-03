@@ -5,9 +5,15 @@
 import 'package:flutter/material.dart';
 import 'package:stateful_books/src/application_context.dart';
 
-import 'src/auth.dart';
+void main() async {
+  // Need to call this as we are using Flutter bindings before runApp is called.
+  WidgetsFlutterBinding.ensureInitialized();
 
-void main() => runApp(Bookstore(applicationContext: ApplicationContext()));
+  final applicationContext = await ApplicationContext.setupDefault();
+
+  runApp(Bookstore(applicationContext: applicationContext));
+}
+
 
 /// The book store view.
 class Bookstore extends StatelessWidget {
@@ -18,13 +24,10 @@ class Bookstore extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) =>
-    ApplicationContextProvider(applicationContext: applicationContext, child:
-      BookstoreAuthScope(
-        notifier: applicationContext.auth,
-        child: MaterialApp.router(
-          debugShowCheckedModeBanner: false,
-          routerConfig: applicationContext.router,
-        ),
+    ApplicationContextProvider(applicationContext: applicationContext,
+      child: MaterialApp.router(
+        debugShowCheckedModeBanner: false,
+        routerConfig: applicationContext.router,
       ),
     );
 }

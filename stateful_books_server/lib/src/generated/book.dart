@@ -225,6 +225,9 @@ typedef BookExpressionBuilder = _i1.Expression Function(BookTable);
 class BookTable extends _i1.Table {
   BookTable() : super(tableName: 'book');
 
+  /// The database id, set if the object has been inserted into the
+  /// database or if it has been fetched from the database. Otherwise,
+  /// the id will be null.
   final id = _i1.ColumnInt('id');
 
   final title = _i1.ColumnString('title');

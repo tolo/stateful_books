@@ -3,48 +3,39 @@
 // found in the LICENSE file.
 
 import 'package:flutter/widgets.dart';
+import 'package:serverpod_auth_client/module.dart';
+
+import 'package:serverpod_auth_shared_flutter/serverpod_auth_shared_flutter.dart';
+import 'package:stateful_books_client/stateful_books_client.dart';
 
 /// A mock authentication service.
 class BookstoreAuth extends ChangeNotifier {
-  bool _signedIn = false;
-  bool _isAdmin = false;
+
+  BookstoreAuth(Client client) : sessionManager = SessionManager(
+    caller: client.modules.auth,
+  );
+
+  final SessionManager sessionManager;
 
   /// Whether user has signed in.
-  bool get signedIn => _signedIn;
+  bool get signedIn => user != null;
+  UserInfo? get user => sessionManager.signedInUser;
+  bool get isAdmin => user?.scopeNames.contains('admin') ?? false;
 
-  bool get isAdmin => _isAdmin;
+  Future<void> initialize() async {
+    // The session manager keeps track of the signed-in state of the user. You
+    // can query it to see if the user is currently signed in and get information
+    // about the user.
+    await sessionManager.initialize();
+    sessionManager.addListener(() {
+      notifyListeners();
+    });
+  }
 
   /// Signs out the current user.
   Future<void> signOut() async {
     await Future<void>.delayed(const Duration(milliseconds: 200));
-    // Sign out.
-    _signedIn = false;
+    await sessionManager.signOut();
     notifyListeners();
   }
-
-  /// Signs in a user.
-  Future<bool> signIn(String username, String password) async {
-    await Future<void>.delayed(const Duration(milliseconds: 200));
-
-    // Sign in. Allow any password.
-    _signedIn = true;
-    _isAdmin = username == 'admin';
-    notifyListeners();
-    return _signedIn;
-  }
-}
-
-/// An inherited notifier to host [BookstoreAuth] for the subtree.
-class BookstoreAuthScope extends InheritedNotifier<BookstoreAuth> {
-  /// Creates a [BookstoreAuthScope].
-  const BookstoreAuthScope({
-    required BookstoreAuth notifier,
-    required Widget child,
-    Key? key,
-  }) : super(key: key, notifier: notifier, child: child);
-
-  /// Gets the [BookstoreAuth] above the context.
-  static BookstoreAuth of(BuildContext context) => context
-      .dependOnInheritedWidgetOfExactType<BookstoreAuthScope>()!
-      .notifier!;
 }

@@ -12,7 +12,8 @@ import 'author.dart' as _i2;
 import 'book.dart' as _i3;
 import 'package:stateful_books_server/src/generated/book.dart' as _i4;
 import 'package:stateful_books_server/src/generated/author.dart' as _i5;
-import 'package:serverpod/protocol.dart' as _i6;
+import 'package:serverpod_auth_server/module.dart' as _i6;
+import 'package:serverpod/protocol.dart' as _i7;
 export 'author.dart';
 export 'book.dart'; // ignore_for_file: equal_keys_in_map
 
@@ -57,11 +58,19 @@ class Protocol extends _i1.SerializationManagerServer {
     try {
       return _i6.Protocol().deserialize<T>(data, t);
     } catch (_) {}
+    try {
+      return _i7.Protocol().deserialize<T>(data, t);
+    } catch (_) {}
     return super.deserialize<T>(data, t);
   }
 
   @override
   String? getClassNameForObject(Object data) {
+    String? className;
+    className = _i6.Protocol().getClassNameForObject(data);
+    if (className != null) {
+      return 'serverpod_auth.$className';
+    }
     if (data is _i2.Author) {
       return 'Author';
     }
@@ -73,6 +82,10 @@ class Protocol extends _i1.SerializationManagerServer {
 
   @override
   dynamic deserializeByClassName(Map<String, dynamic> data) {
+    if (data['className'].startsWith('serverpod_auth.')) {
+      data['className'] = data['className'].substring(15);
+      return _i6.Protocol().deserializeByClassName(data);
+    }
     if (data['className'] == 'Author') {
       return deserialize<_i2.Author>(data['data']);
     }
@@ -86,6 +99,12 @@ class Protocol extends _i1.SerializationManagerServer {
   _i1.Table? getTableForType(Type t) {
     {
       var table = _i6.Protocol().getTableForType(t);
+      if (table != null) {
+        return table;
+      }
+    }
+    {
+      var table = _i7.Protocol().getTableForType(t);
       if (table != null) {
         return table;
       }

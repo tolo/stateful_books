@@ -21,6 +21,9 @@ dependencies:
       ref: nested-persistent-navigation
 
   serverpod_flutter: ^1.0.0
+  serverpod_auth_client: ^1.0.0
+  serverpod_auth_shared_flutter: ^1.0.0
+  serverpod_auth_email_flutter: ^1.0.0
   stateful_books_client:
     path: ../stateful_books_client
 

@@ -1,5 +1,5 @@
 import 'package:serverpod/serverpod.dart';
-// import 'package:serverpod_auth_server/module.dart' as auth;
+import 'package:serverpod_auth_server/module.dart' as auth;
 import 'package:stateful_books_server/src/endpoints/library_endpoint.dart';
 
 import 'package:stateful_books_server/src/web/routes/root.dart';
@@ -30,6 +30,18 @@ void run(List<String> args) async {
     RouteStaticDirectory(serverDirectory: 'static', basePath: '/'),
     '/*',
   );
+
+  auth.AuthConfig.set(auth.AuthConfig(
+    sendValidationEmail: (session, email, validationCode) async {
+      print('sendValidationEmail - $email - validationCode: $validationCode');
+      // Send your validation email here.
+      return true;
+    },
+    sendPasswordResetEmail: (session, userInfo, validationCode) async {
+      // Send a password reset email here.
+      return true;
+    },
+  ));
 
   // Seed the database with some initial data.
   await _seedDatabase(pod);
@@ -72,13 +84,17 @@ Future<void> _seedDatabase(Serverpod pod) async {
       session.log('Database contains $bookCount books - skipping seeding.');
     }
 
-    // final user = await auth.Users.findUserByEmail(session, 'admin@ad.min');
-    // if (user == null) {
-    //   session.log('Seeding users...');
-    //   await auth.Users.createUser(session, auth.UserInfo(userIdentifier: 'admin', userName: 'admin',
-    //       created: DateTime.now(), scopeNames: [Scope.admin.name!], blocked: false));
-    //   session.log('Done seeding users.');
-    // }
+    final user = await auth.Users.findUserByIdentifier(session, 'admin');
+    if (user == null) {
+      session.log('Seeding users...');
+      final user = await auth.Users.createUser(session, auth.UserInfo(userIdentifier: 'admin', userName: 'admin', email: 'a@d.min',
+          created: DateTime.now(), scopeNames: [Scope.admin.name!], blocked: false));
+      if (user != null) {
+        final emailAuth = auth.EmailAuth(userId: user.id!, email: user.email!, hash: auth.Emails.generatePasswordHash('password', user.email!));
+        await auth.EmailAuth.insert(session, emailAuth);
+      }
+      session.log('Done seeding users.');
+    }
 
   } finally {
     session?.close();

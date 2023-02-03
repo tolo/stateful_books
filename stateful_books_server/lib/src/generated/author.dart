@@ -192,6 +192,9 @@ typedef AuthorExpressionBuilder = _i1.Expression Function(AuthorTable);
 class AuthorTable extends _i1.Table {
   AuthorTable() : super(tableName: 'author');
 
+  /// The database id, set if the object has been inserted into the
+  /// database or if it has been fetched from the database. Otherwise,
+  /// the id will be null.
   final id = _i1.ColumnInt('id');
 
   final name = _i1.ColumnString('name');

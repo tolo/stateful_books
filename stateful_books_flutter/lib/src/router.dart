@@ -24,12 +24,7 @@ class AppRouter {
         pageBuilder: (BuildContext context, GoRouterState state) =>
             FadeTransitionPage(
               key: state.pageKey,
-              child: SignInScreen(
-                onSignIn: (Credentials credentials) {
-                  BookstoreAuthScope.of(context)
-                      .signIn(credentials.username, credentials.password);
-                },
-              ),
+              child: const SignInScreen(),
             ),
       ),
       StatefulShellRoute(
