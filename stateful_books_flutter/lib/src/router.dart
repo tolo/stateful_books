@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:stateful_books/src/application_context.dart';
 import 'package:stateful_books/src/auth.dart';
 import 'package:stateful_books/src/screens/authors_add.dart';
 import 'package:stateful_books/src/screens/books_add.dart';
@@ -13,7 +14,7 @@ import 'screens/settings.dart';
 import 'screens/sign_in.dart';
 
 class AppRouter {
-  static GoRouter buildRouter(BookstoreAuth auth) => GoRouter(
+  GoRouter buildRouter(ApplicationContext appContext) => GoRouter(
     routes: <RouteBase>[
       GoRoute(
         path: '/',
@@ -57,7 +58,7 @@ class AppRouter {
                     path: ':bookId([0-9]+)',
                     builder: (BuildContext context, GoRouterState state) {
                       final String bookId = state.params['bookId']!;
-                      return BookDetailsScreen(bookId: int.tryParse(bookId));
+                      return BookDetailsScreen(appContext: appContext, bookId: int.tryParse(bookId));
                     },
                   ),
                   GoRoute(path: 'add', builder: (BuildContext context, GoRouterState state)
@@ -82,7 +83,7 @@ class AppRouter {
                     path: ':authorId([0-9]+)',
                     builder: (BuildContext context, GoRouterState state) {
                       final String authorId = state.params['authorId']!;
-                      return AuthorDetailsScreen(authorId: int.tryParse(authorId));
+                      return AuthorDetailsScreen(appContext: appContext, authorId: int.tryParse(authorId));
                     },
                   ),
                   GoRoute(path: 'add', builder: (BuildContext context, GoRouterState state)
@@ -116,8 +117,8 @@ class AppRouter {
             FadeTransitionPage(key: state.pageKey, child: child),
       ),
     ],
-    redirect: (context, state) => _guard(context, state, auth),
-    refreshListenable: auth,
+    redirect: (context, state) => _guard(context, state, appContext.auth),
+    refreshListenable: appContext.auth,
     debugLogDiagnostics: true,
   );
 

@@ -30,7 +30,9 @@ class ApplicationContextProvider extends InheritedNotifier<ApplicationContext> {
 }
 
 class ApplicationContext extends ChangeNotifier {
-  ApplicationContext._(this.client, this.auth, this.library, this.router);
+  ApplicationContext._(this.client, this.auth, this.library, AppRouter routerBuilder) {
+    router = routerBuilder.buildRouter(this);
+  }
 
   static Future<ApplicationContext> setupDefault() async {
     final client = Client('http://localhost:8080/', authenticationKeyManager: FlutterAuthenticationKeyManager(),)
@@ -39,16 +41,15 @@ class ApplicationContext extends ChangeNotifier {
     final library = LibraryApi(client);
     final auth = BookstoreAuth(client);
     await auth.initialize();
-    final router = AppRouter.buildRouter(auth);
 
-    return ApplicationContext._(client, auth, library, router);
+    return ApplicationContext._(client, auth, library, AppRouter());
   }
 
   final Client client;
   SessionManager get sessionManager => auth.sessionManager;
   final BookstoreAuth auth;
   final LibraryApi library;
-  final GoRouter router;
+  late GoRouter router;
 
   void mustRebuild() {
     auth.notifyListeners();

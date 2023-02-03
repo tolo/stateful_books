@@ -87,7 +87,7 @@ Future<void> _seedDatabase(Serverpod pod) async {
     final user = await auth.Users.findUserByIdentifier(session, 'admin');
     if (user == null) {
       session.log('Seeding users...');
-      final user = await auth.Users.createUser(session, auth.UserInfo(userIdentifier: 'admin', userName: 'admin', email: 'a@d.min',
+      final user = await auth.Users.createUser(session, auth.UserInfo(userIdentifier: 'admin', userName: 'admin', email: 'admin@dev.null',
           created: DateTime.now(), scopeNames: [Scope.admin.name!], blocked: false));
       if (user != null) {
         final emailAuth = auth.EmailAuth(userId: user.id!, email: user.email!, hash: auth.Emails.generatePasswordHash('password', user.email!));

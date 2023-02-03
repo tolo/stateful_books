@@ -44,6 +44,9 @@ class _SignInScreenState extends State<SignInScreen> {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Text('Sign in', style: Theme.of(context).textTheme.headlineMedium),
+                  Text('Use', style: Theme.of(context).textTheme.labelMedium, textAlign: TextAlign.center).padding(top: 8 ),
+                  Text('admin@dev.null / password', style: Theme.of(context).textTheme.labelMedium?.copyWith(fontWeight: FontWeight.bold), textAlign: TextAlign.center),
+                  Text('to login, or create new user', style: Theme.of(context).textTheme.labelMedium, textAlign: TextAlign.center),
                   SignInWithEmailButton(caller: ApplicationContextProvider.of(context).sessionManager.caller)
                       .padding(top: 32),
                 ],

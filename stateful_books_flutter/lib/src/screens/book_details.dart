@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stateful_books/src/application_context.dart';
 import 'package:stateful_books/src/widgets/future_widget.dart';
+import 'package:stateful_books/src/widgets/stateless_widget_base.dart';
 import 'package:stateful_books/src/widgets/widget_utils.dart';
 import 'package:stateful_books_client/stateful_books_client.dart';
 import 'package:url_launcher/link.dart';
@@ -13,9 +14,10 @@ import 'package:url_launcher/link.dart';
 import 'author_details.dart';
 
 /// A screen to display book details.
-class BookDetailsScreen extends StatelessWidget with WidgetAdditions {
+class BookDetailsScreen extends StatelessWidgetBase with WidgetAdditions {
   /// Creates a [BookDetailsScreen].
   const BookDetailsScreen({
+    required super.appContext,
     Key? key,
     this.bookId,
   }) : super(key: key);
@@ -66,7 +68,7 @@ class BookDetailsScreen extends StatelessWidget with WidgetAdditions {
                 Navigator.of(context).push<void>(
                   MaterialPageRoute<void>(
                     builder: (BuildContext context) =>
-                        AuthorDetailsScreen(authorId: book.authorId),
+                        AuthorDetailsScreen(appContext: appContext, authorId: book.authorId),
                   ),
                 );
               },

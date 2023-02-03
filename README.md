@@ -40,6 +40,7 @@ dart pub get
 - Using your databse IDE, run the database scripts below (found in the `stateful_books_server/generated` directory) to add the requires tables to the database. 
     - `tables-serverpod.pgsql` - tables required by Serverpod itself.
     - `tables.pgsql` - tables for the domain objects part of the stateful_books app.
+    - `tables-auth.pgsql` - tables for email authentication (copied from [serverpod_auth_server](https://github.com/serverpod/serverpod/blob/main/modules/serverpod_auth/serverpod_auth_server/generated/tables.pgsql) module).
     
 
 ### 5. Run the server

@@ -4,18 +4,19 @@
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:stateful_books/src/application_context.dart';
 import 'package:stateful_books/src/data/library_api.dart';
 import 'package:stateful_books/src/widgets/future_widget.dart';
+import 'package:stateful_books/src/widgets/stateless_widget_base.dart';
 import 'package:stateful_books/src/widgets/widget_utils.dart';
 import 'package:stateful_books_client/stateful_books_client.dart';
 
 import '../widgets/book_list.dart';
 
 /// The author detail screen.
-class AuthorDetailsScreen extends StatelessWidget with WidgetAdditions {
+class AuthorDetailsScreen extends StatelessWidgetBase with WidgetAdditions {
   /// Creates an author detail screen.
   const AuthorDetailsScreen({
+    required super.appContext,
     required this.authorId,
     Key? key,
   }) : super(key: key);
@@ -25,7 +26,6 @@ class AuthorDetailsScreen extends StatelessWidget with WidgetAdditions {
 
   @override
   Widget build(BuildContext context) {
-    final library = ApplicationContextProvider.of(context).library;
     if (authorId == null) {
       return Scaffold(
         appBar: AppBar(
@@ -37,8 +37,8 @@ class AuthorDetailsScreen extends StatelessWidget with WidgetAdditions {
       );
     }
     return FutureWidget<Author>(
-      future: library.authorById(authorId!),
-      builder: (context, data) => _authorDetails(context, library, data),
+      future: appContext.library.authorById(authorId!),
+      builder: (context, data) => _authorDetails(context, appContext.library, data),
     );
   }
 
@@ -77,10 +77,9 @@ class AuthorDetailsScreen extends StatelessWidget with WidgetAdditions {
       return;
     }
     final navigator = Navigator.of(context);
-    final library = ApplicationContextProvider.of(context).library;
 
     try {
-      await library.deleteAuthor(author.id!);
+      await appContext.library.deleteAuthor(author.id!);
       showSnack(scaffoldMessenger, 'Author deleted!');
       navigator.pop();
     } catch (e) {
