@@ -54,7 +54,7 @@ class Bookstore extends StatelessWidget {
           ),
         ),
       ),
-      StatefulShellRoute(
+      StackedShellRoute(
         branches: [
           /// The custom branch class ScaffoldBranch includes additional information
           /// (title and icon) to make it possible to setup the AdaptiveNavigationScaffold
@@ -70,20 +70,20 @@ class Bookstore extends StatelessWidget {
               GoRoute(
                 path: '/book/:bookId',
                 redirect: (BuildContext context, GoRouterState state) =>
-                    '/books/all/${state.params['bookId']}',
+                    '/books/all/${state.pathParameters['bookId']}',
               ),
               GoRoute(
                 path: '/books/:kind(new|all|popular)',
                 pageBuilder: (BuildContext context, GoRouterState state) =>
                     FadeTransitionPage(
                   key: state.pageKey,
-                  child: BooksScreen(state.params['kind']!),
+                  child: BooksScreen(state.pathParameters['kind']!),
                 ),
                 routes: <GoRoute>[
                   GoRoute(
                     path: ':bookId',
                     builder: (BuildContext context, GoRouterState state) {
-                      final String bookId = state.params['bookId']!;
+                      final String bookId = state.pathParameters['bookId']!;
                       final Book? selectedBook = libraryInstance.allBooks
                           .firstWhereOrNull(
                               (Book b) => b.id.toString() == bookId);
@@ -110,7 +110,7 @@ class Bookstore extends StatelessWidget {
                   GoRoute(
                     path: ':authorId',
                     builder: (BuildContext context, GoRouterState state) {
-                      final int authorId = int.parse(state.params['authorId']!);
+                      final int authorId = int.parse(state.pathParameters['authorId']!);
                       final Author? selectedAuthor = libraryInstance.allAuthors
                           .firstWhereOrNull((Author a) => a.id == authorId);
 
@@ -122,7 +122,7 @@ class Bookstore extends StatelessWidget {
               GoRoute(
                 path: '/author/:authorId',
                 redirect: (BuildContext context, GoRouterState state) =>
-                    '/authors/${state.params['authorId']}',
+                    '/authors/${state.pathParameters['authorId']}',
               ),
             ],
           ),
@@ -141,9 +141,11 @@ class Bookstore extends StatelessWidget {
             ],
           ),
         ],
-        builder: (context, state, child) => BookstoreScaffold(child: child),
-        pageBuilder: (context, state, child) =>
-            FadeTransitionPage(key: state.pageKey, child: child),
+        pageBuilder: (context, state, navigationShell) =>
+            FadeTransitionPage(
+                key: state.pageKey,
+                child: BookstoreScaffold(navigationShell: navigationShell),
+            ),
       ),
     ],
     redirect: _guard,
@@ -153,7 +155,7 @@ class Bookstore extends StatelessWidget {
 
   String? _guard(BuildContext context, GoRouterState state) {
     final bool signedIn = _auth.signedIn;
-    final bool signingIn = state.subloc == '/signin';
+    final bool signingIn = state.matchedLocation == '/signin';
 
     // Go to /signin if the user is not signed in
     if (!signedIn && !signingIn) {

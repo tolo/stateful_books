@@ -11,9 +11,9 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.5
-  url_launcher: ^6.1.8
+  url_launcher: ^6.1.10
   collection: ^1.17.0
-  adaptive_navigation: ^0.0.7
+  adaptive_navigation: ^0.0.9
   go_router:
     git:
       url: https://github.com/tolo/flutter_packages.git

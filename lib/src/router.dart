@@ -14,7 +14,7 @@ class AppRouter extends InheritedWidget {
   }
 
   @override
-  bool updateShouldNotify(AppRouter old) {
+  bool updateShouldNotify(AppRouter oldWidget) {
     return false;
   }
 }
