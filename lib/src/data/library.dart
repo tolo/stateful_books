@@ -2,58 +2,76 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:stateful_books/src/domain/library_service.dart';
+
 import 'author.dart';
 import 'book.dart';
 
 /// Library data mock.
-final Library libraryInstance = Library()
-  ..addBook(
+final LibraryApi libraryInstance = LibraryApi()
+  .._addBook(
       title: 'Left Hand of Darkness',
       authorName: 'Ursula K. Le Guin',
       isPopular: true,
       isNew: true)
-  ..addBook(
+  .._addBook(
       title: 'Too Like the Lightning',
       authorName: 'Ada Palmer',
       isPopular: false,
       isNew: true)
-  ..addBook(
+  .._addBook(
       title: 'Kindred',
       authorName: 'Octavia E. Butler',
       isPopular: true,
       isNew: false)
-  ..addBook(
+  .._addBook(
       title: 'The Lathe of Heaven',
       authorName: 'Ursula K. Le Guin',
       isPopular: false,
       isNew: false);
 
 /// A library that contains books and authors.
-class Library {
+class LibraryApi implements LibraryRepository {
+  final List<Book> _mockedBooks = <Book>[];
+  final List<Author> _mockedAuthors = <Author>[];
+
   /// The books in the library.
-  final List<Book> allBooks = <Book>[];
+  @override
+  Future<List<Book>> get allBooks => Future.delayed(const Duration(seconds: 1), () => _mockedBooks);
 
   /// The authors in the library.
-  final List<Author> allAuthors = <Author>[];
+  @override
+  Future<List<Author>> get allAuthors => Future.delayed(const Duration(seconds: 1), () => _mockedAuthors);
 
   /// Adds a book into the library.
-  void addBook({
+  Future<void> addBook({
     required String title,
     required String authorName,
     required bool isPopular,
     required bool isNew,
   }) {
-    final Author author = allAuthors.firstWhere(
+    return Future.delayed(const Duration(seconds: 1), () {
+      _addBook(title: title, authorName: authorName, isPopular: isPopular, isNew: isNew);
+    });
+  }
+
+  void _addBook({
+    required String title,
+    required String authorName,
+    required bool isPopular,
+    required bool isNew,
+  }) {
+    final Author author = _mockedAuthors.firstWhere(
       (Author author) => author.name == authorName,
       orElse: () {
-        final Author value = Author(id: allAuthors.length, name: authorName);
-        allAuthors.add(value);
+        final Author value = Author(id: _mockedAuthors.length, name: authorName);
+        _mockedAuthors.add(value);
         return value;
       },
     );
 
     final Book book = Book(
-      id: allBooks.length,
+      id: _mockedBooks.length,
       title: title,
       isPopular: isPopular,
       isNew: isNew,
@@ -61,16 +79,6 @@ class Library {
     );
 
     author.books.add(book);
-    allBooks.add(book);
+    _mockedBooks.add(book);
   }
-
-  /// The list of popular books in the library.
-  List<Book> get popularBooks => <Book>[
-        ...allBooks.where((Book book) => book.isPopular),
-      ];
-
-  /// The list of new books in the library.
-  List<Book> get newBooks => <Book>[
-        ...allBooks.where((Book book) => book.isNew),
-      ];
 }

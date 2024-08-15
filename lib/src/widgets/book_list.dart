@@ -2,7 +2,9 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:result_notifier/result_notifier.dart';
 
 import '../data.dart';
 
@@ -12,26 +14,28 @@ class BookList extends StatelessWidget {
   const BookList({
     required this.books,
     this.onTap,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// The list of books to be displayed.
-  final List<Book> books;
+  final ValueListenable<Result<List<Book>>> books;
 
   /// Called when the user taps a book.
   final ValueChanged<Book>? onTap;
 
   @override
-  Widget build(BuildContext context) => ListView.builder(
-        itemCount: books.length,
-        itemBuilder: (BuildContext context, int index) => ListTile(
-          title: Text(
-            books[index].title,
-          ),
-          subtitle: Text(
-            books[index].author.name,
-          ),
-          onTap: onTap != null ? () => onTap!(books[index]) : null,
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: books.length,
+      itemBuilder: (BuildContext context, int index) => ListTile(
+        title: Text(
+          books[index].title,
         ),
-      );
+        subtitle: Text(
+          books[index].author.name,
+        ),
+        onTap: onTap != null ? () => onTap!(books[index]) : null,
+      ),
+    );
+  }
 }

@@ -26,15 +26,13 @@ class BookstoreScaffold extends StatelessWidget {
   /// Creates a [BookstoreScaffold].
   const BookstoreScaffold({
     required this.navigationShell,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// The navigation branches that the menu items (destination) in this
   /// BookstoreScaffold should represent (using a AdaptiveNavigationScaffold).
   List<ScaffoldBranch> _branches(BuildContext context) =>
-      navigationShell.route.branches
-          .map((e) => e as ScaffoldBranch)
-          .toList();
+      navigationShell.route.branches.map((e) => e as ScaffoldBranch).toList();
 
   /// The associated [StatefulNavigationShell], which will also be used as the body of the Scaffold
   final StatefulNavigationShell navigationShell;

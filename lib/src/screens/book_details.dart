@@ -13,9 +13,9 @@ import 'author_details.dart';
 class BookDetailsScreen extends StatelessWidget {
   /// Creates a [BookDetailsScreen].
   const BookDetailsScreen({
-    Key? key,
+    super.key,
     this.book,
-  }) : super(key: key);
+  });
 
   /// The book to be displayed.
   final Book? book;
@@ -36,8 +36,9 @@ class BookDetailsScreen extends StatelessWidget {
       body: Center(
         child: Column(
           children: <Widget>[
-            Padding(padding: const EdgeInsets.all(16.0), child:
-              Text(
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
                 book!.title,
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
