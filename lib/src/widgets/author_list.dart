@@ -2,38 +2,21 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:flutter/material.dart';
-
-import '../data.dart';
+import 'package:stateful_books/src/data/author.dart';
+import 'package:stateful_books/src/widgets/entity_list.dart';
 
 /// The author list view.
-class AuthorList extends StatelessWidget {
+class AuthorList extends EntityList<Author> {
   /// Creates an [AuthorList].
   const AuthorList({
-    required this.authors,
-    this.onTap,
+    required List<Author> authors,
+    super.onTap,
     super.key,
-  });
-
-  /// The list of authors to be shown.
-  final List<Author> authors;
-
-  /// Called when the user taps an author.
-  final ValueChanged<Author>? onTap;
+  }) : super(entities: authors);
 
   @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: authors.length,
-      itemBuilder: (BuildContext context, int index) => ListTile(
-        title: Text(
-          authors[index].name,
-        ),
-        subtitle: Text(
-          '${authors[index].books.length} books',
-        ),
-        onTap: onTap != null ? () => onTap!(authors[index]) : null,
-      ),
-    );
-  }
+  String titleFor(Author entity) => entity.name;
+
+  @override
+  String subtitleFor(Author entity) => '${entity.books.length} books';
 }

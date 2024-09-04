@@ -3,13 +3,24 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
+
 import 'package:go_router/go_router.dart';
 
-import '../data.dart';
-import '../widgets/book_list.dart';
+import 'package:stateful_books/src/data/author.dart';
+import 'package:stateful_books/src/data/book.dart';
+import 'package:stateful_books/src/domain/library_service.dart';
+import 'package:stateful_books/src/widgets/loader.dart';
+import 'package:stateful_books/src/widgets/book_list.dart';
 
 /// The author detail screen.
 class AuthorDetailsScreen extends StatelessWidget {
+  static Widget loadAuthor(int authorId) {
+    return Loader<Author?>(
+      listenable: libraryService.getAuthorById(authorId),
+      builder: (author) => AuthorDetailsScreen(author: author),
+    );
+  }
+
   /// Creates an author detail screen.
   const AuthorDetailsScreen({
     required this.author,

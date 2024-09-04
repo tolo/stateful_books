@@ -1,11 +1,8 @@
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import 'auth.dart';
-import 'data/author.dart';
 import 'data/book.dart';
-import 'data/library.dart';
 import 'screens/author_details.dart';
 import 'screens/authors.dart';
 import 'screens/book_details.dart';
@@ -30,17 +27,19 @@ class AppRouter {
       ),
       GoRoute(
         path: '/signin',
-        pageBuilder: (BuildContext context, GoRouterState state) => FadeTransitionPage(
+        pageBuilder: (BuildContext context, GoRouterState state) =>
+            FadeTransitionPage(
           key: state.pageKey,
           child: SignInScreen(
             onSignIn: (Credentials credentials) {
-              BookstoreAuthScope.of(context).signIn(credentials.username, credentials.password);
+              BookstoreAuthScope.of(context)
+                  .signIn(credentials.username, credentials.password);
             },
           ),
         ),
       ),
-      //StatefulShellRoute.indexedStack(
-      StatefulShellRoute(
+      StatefulShellRoute.indexedStack(
+        //StatefulShellRoute(
         branches: [
           /// The custom branch class ScaffoldBranch includes additional information
           /// (title and icon) to make it possible to setup the AdaptiveNavigationScaffold
@@ -55,11 +54,13 @@ class AppRouter {
               ),
               GoRoute(
                 path: '/book/:bookId',
-                redirect: (BuildContext context, GoRouterState state) => '/books/all/${state.pathParameters['bookId']}',
+                redirect: (BuildContext context, GoRouterState state) =>
+                    '/books/all/${state.pathParameters['bookId']}',
               ),
               GoRoute(
                 path: '/books/:kind(new|all|popular)',
-                pageBuilder: (BuildContext context, GoRouterState state) => FadeTransitionPage(
+                pageBuilder: (BuildContext context, GoRouterState state) =>
+                    FadeTransitionPage(
                   key: state.pageKey,
                   child: BooksScreen(state.pathParameters['kind']!),
                 ),
@@ -67,11 +68,11 @@ class AppRouter {
                   GoRoute(
                     path: ':bookId',
                     builder: (BuildContext context, GoRouterState state) {
-                      final String bookId = state.pathParameters['bookId']!;
-                      final Book? selectedBook =
-                          libraryInstance.allBooks.firstWhereOrNull((Book b) => b.id.toString() == bookId);
-
-                      return BookDetailsScreen(book: selectedBook);
+                      final int bookId =
+                          int.tryParse(state.pathParameters['bookId'] ?? '') ??
+                              -1;
+                      final Book? book = state.extra as Book?;
+                      return BookDetailsScreen.loadBook(bookId, book);
                     },
                   ),
                 ],
@@ -84,7 +85,8 @@ class AppRouter {
             routes: [
               GoRoute(
                 path: '/authors',
-                pageBuilder: (BuildContext context, GoRouterState state) => FadeTransitionPage(
+                pageBuilder: (BuildContext context, GoRouterState state) =>
+                    FadeTransitionPage(
                   key: state.pageKey,
                   child: const AuthorsScreen(),
                 ),
@@ -92,18 +94,18 @@ class AppRouter {
                   GoRoute(
                     path: ':authorId',
                     builder: (BuildContext context, GoRouterState state) {
-                      final int authorId = int.parse(state.pathParameters['authorId']!);
-                      final Author? selectedAuthor =
-                          libraryInstance.allAuthors.firstWhereOrNull((Author a) => a.id == authorId);
-
-                      return AuthorDetailsScreen(author: selectedAuthor);
+                      final int authorId = int.tryParse(
+                              state.pathParameters['authorId'] ?? '') ??
+                          -1;
+                      return AuthorDetailsScreen.loadAuthor(authorId);
                     },
                   ),
                 ],
               ),
               GoRoute(
                 path: '/author/:authorId',
-                redirect: (BuildContext context, GoRouterState state) => '/authors/${state.pathParameters['authorId']}',
+                redirect: (BuildContext context, GoRouterState state) =>
+                    '/authors/${state.pathParameters['authorId']}',
               ),
             ],
           ),
@@ -113,7 +115,8 @@ class AppRouter {
             routes: [
               GoRoute(
                 path: '/settings',
-                pageBuilder: (BuildContext context, GoRouterState state) => FadeTransitionPage(
+                pageBuilder: (BuildContext context, GoRouterState state) =>
+                    FadeTransitionPage(
                   key: state.pageKey,
                   child: const SettingsScreen(),
                 ),
@@ -121,15 +124,9 @@ class AppRouter {
             ],
           ),
         ],
-        // pageBuilder: (context, state, navigationShell) => FadeTransitionPage(
-        //   key: state.pageKey,
-        //   child: BookstoreScaffold(navigationShell: navigationShell),
-        // ),
-        navigatorContainerBuilder: (context, navigationShell, children) =>
-            BookstoreScaffold(navigationShell: navigationShell),
         pageBuilder: (context, state, navigationShell) => FadeTransitionPage(
           key: state.pageKey,
-          child: navigationShell,
+          child: BookstoreScaffold(navigationShell: navigationShell),
         ),
       ),
     ],
@@ -163,8 +160,10 @@ class FadeTransitionPage extends CustomTransitionPage<void> {
     required LocalKey super.key,
     required super.child,
   }) : super(
-            transitionsBuilder: (BuildContext context, Animation<double> animation,
-                    Animation<double> secondaryAnimation, Widget child) =>
+            transitionsBuilder: (BuildContext context,
+                    Animation<double> animation,
+                    Animation<double> secondaryAnimation,
+                    Widget child) =>
                 FadeTransition(
                   opacity: animation.drive(_curveTween),
                   child: child,

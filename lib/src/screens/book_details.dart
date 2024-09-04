@@ -3,14 +3,24 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
+
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/link.dart';
 
-import '../data.dart';
-import 'author_details.dart';
+import 'package:stateful_books/src/data/book.dart';
+import 'package:stateful_books/src/domain/library_service.dart';
+import 'package:stateful_books/src/screens/author_details.dart';
+import 'package:stateful_books/src/widgets/loader.dart';
 
 /// A screen to display book details.
 class BookDetailsScreen extends StatelessWidget {
+  static Widget loadBook(int bookId, Book? initiallySelected) {
+    return Loader<Book?>(
+      listenable: libraryService.getBookById(bookId),
+      builder: (book) => BookDetailsScreen(book: book ?? initiallySelected),
+    );
+  }
+
   /// Creates a [BookDetailsScreen].
   const BookDetailsScreen({
     super.key,

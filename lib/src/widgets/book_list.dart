@@ -2,40 +2,21 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:result_notifier/result_notifier.dart';
-
-import '../data.dart';
+import 'package:stateful_books/src/data/book.dart';
+import 'package:stateful_books/src/widgets/entity_list.dart';
 
 /// The book list view.
-class BookList extends StatelessWidget {
+class BookList extends EntityList<Book> {
   /// Creates an [BookList].
   const BookList({
-    required this.books,
-    this.onTap,
+    required List<Book> books,
+    super.onTap,
     super.key,
-  });
-
-  /// The list of books to be displayed.
-  final ValueListenable<Result<List<Book>>> books;
-
-  /// Called when the user taps a book.
-  final ValueChanged<Book>? onTap;
+  }) : super(entities: books);
 
   @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: books.length,
-      itemBuilder: (BuildContext context, int index) => ListTile(
-        title: Text(
-          books[index].title,
-        ),
-        subtitle: Text(
-          books[index].author.name,
-        ),
-        onTap: onTap != null ? () => onTap!(books[index]) : null,
-      ),
-    );
-  }
+  String titleFor(Book entity) => entity.title;
+
+  @override
+  String subtitleFor(Book entity) => entity.author.name;
 }

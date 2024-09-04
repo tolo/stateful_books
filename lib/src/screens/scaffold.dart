@@ -41,11 +41,13 @@ class BookstoreScaffold extends StatelessWidget {
       navigationShell.goBranch(index);
 
   @override
-  Widget build(BuildContext context) => AdaptiveNavigationScaffold(
-        selectedIndex: navigationShell.currentIndex,
-        body: ClipRect(child: navigationShell),
-        onDestinationSelected: (int idx) => _goBranch(context, idx),
-        destinations:
-            _branches(context).map((e) => e.adaptiveDestination).toList(),
-      );
+  Widget build(BuildContext context) {
+    return AdaptiveNavigationScaffold(
+      selectedIndex: navigationShell.currentIndex,
+      body: ClipRect(child: navigationShell),
+      onDestinationSelected: (int idx) => _goBranch(context, idx),
+      destinations:
+          _branches(context).map((e) => e.adaptiveDestination).toList(),
+    );
+  }
 }

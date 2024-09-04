@@ -2,13 +2,11 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:stateful_books/src/domain/library_service.dart';
-
 import 'author.dart';
 import 'book.dart';
 
-/// Library data mock.
-final LibraryApi libraryInstance = LibraryApi()
+/// Library API singleton.
+final LibraryApi libraryApi = LibraryApi()
   .._addBook(
       title: 'Left Hand of Darkness',
       authorName: 'Ursula K. Le Guin',
@@ -31,17 +29,17 @@ final LibraryApi libraryInstance = LibraryApi()
       isNew: false);
 
 /// A library that contains books and authors.
-class LibraryApi implements LibraryRepository {
+class LibraryApi {
   final List<Book> _mockedBooks = <Book>[];
   final List<Author> _mockedAuthors = <Author>[];
 
   /// The books in the library.
-  @override
-  Future<List<Book>> get allBooks => Future.delayed(const Duration(seconds: 1), () => _mockedBooks);
+  Future<List<Book>> get allBooks =>
+      Future.delayed(const Duration(seconds: 1), () => _mockedBooks);
 
   /// The authors in the library.
-  @override
-  Future<List<Author>> get allAuthors => Future.delayed(const Duration(seconds: 1), () => _mockedAuthors);
+  Future<List<Author>> get allAuthors =>
+      Future.delayed(const Duration(seconds: 1), () => _mockedAuthors);
 
   /// Adds a book into the library.
   Future<void> addBook({
@@ -51,7 +49,11 @@ class LibraryApi implements LibraryRepository {
     required bool isNew,
   }) {
     return Future.delayed(const Duration(seconds: 1), () {
-      _addBook(title: title, authorName: authorName, isPopular: isPopular, isNew: isNew);
+      _addBook(
+          title: title,
+          authorName: authorName,
+          isPopular: isPopular,
+          isNew: isNew);
     });
   }
 
@@ -64,7 +66,8 @@ class LibraryApi implements LibraryRepository {
     final Author author = _mockedAuthors.firstWhere(
       (Author author) => author.name == authorName,
       orElse: () {
-        final Author value = Author(id: _mockedAuthors.length, name: authorName);
+        final Author value =
+            Author(id: _mockedAuthors.length, name: authorName);
         _mockedAuthors.add(value);
         return value;
       },
