@@ -1,10 +1,6 @@
 # stateful_books
 
 A fork of the Books example of [go_router](https://pub.dev/packages/go_router), that uses stateful nested navigation, 
-i.e. `StatefulShellRoute` for the main navigation shell. Currently this sample requires the 
-[PR #2650](https://github.com/flutter/packages/pull/2650) 
-(or [https://github.com/tolo/flutter_packages/tree/nested-persistent-navigation](https://github.com/tolo/flutter_packages/tree/nested-persistent-navigation)).
+i.e. `StatefulShellRoute` for the main navigation shell. 
 
-
-# serverpod branch
-For an implementation using [Serverpod](https://serverpod.dev) as a backend, see the [serverpod branch](https://github.com/tolo/stateful_books/tree/serverpod).
+This fork also uses [result_notifier](https://pub.dev/packages/result_notifier) for state management.
