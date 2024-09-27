@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:stateful_books/src/extensions/go_router_state_extensions.dart';
 
 import 'auth.dart';
 import 'data/book.dart';
@@ -39,7 +40,6 @@ class AppRouter {
         ),
       ),
       StatefulShellRoute.indexedStack(
-        //StatefulShellRoute(
         branches: [
           /// The custom branch class ScaffoldBranch includes additional information
           /// (title and icon) to make it possible to setup the AdaptiveNavigationScaffold
@@ -68,9 +68,7 @@ class AppRouter {
                   GoRoute(
                     path: ':bookId',
                     builder: (BuildContext context, GoRouterState state) {
-                      final int bookId =
-                          int.tryParse(state.pathParameters['bookId'] ?? '') ??
-                              -1;
+                      final int bookId = state.pathParamAsInt('bookId');
                       final Book? book = state.extra as Book?;
                       return BookDetailsScreen.loadBook(bookId, book);
                     },
@@ -94,9 +92,7 @@ class AppRouter {
                   GoRoute(
                     path: ':authorId',
                     builder: (BuildContext context, GoRouterState state) {
-                      final int authorId = int.tryParse(
-                              state.pathParameters['authorId'] ?? '') ??
-                          -1;
+                      final int authorId = state.pathParamAsInt('authorId');
                       return AuthorDetailsScreen.loadAuthor(authorId);
                     },
                   ),

@@ -33,9 +33,12 @@ class AuthorDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (author == null) {
-      return const Scaffold(
-        body: Center(
-          child: Text('No author found.'),
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('‍😢'),
+        ),
+        body: const Center(
+          child: Text('Author not found.'),
         ),
       );
     }

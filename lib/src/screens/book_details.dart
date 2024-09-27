@@ -33,9 +33,12 @@ class BookDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (book == null) {
-      return const Scaffold(
-        body: Center(
-          child: Text('No book found.'),
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('‍😢'),
+        ),
+        body: const Center(
+          child: Text('Book not found.'),
         ),
       );
     }
